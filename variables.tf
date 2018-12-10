@@ -102,7 +102,7 @@ variable "logging_search_slow_logs" {
 variable "master_node_count" {
   description = "Number of master nodes in the Elasticsearch cluster.  Allowed values are 0, 3 or 5."
   type        = "string"
-  default     = 0
+  default     = 3
 }
 
 variable "master_node_instance_type" {
@@ -117,7 +117,7 @@ variable "security_groups" {
   default     = []
 }
 
-variable snapshot_start_hour {
+variable "snapshot_start_hour" {
   description = "The hour (0-23) to issue a daily snapshot of Elasticsearch cluster."
   type        = "string"
   default     = 0
