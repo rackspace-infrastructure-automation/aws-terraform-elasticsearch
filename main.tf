@@ -132,9 +132,9 @@ resource "aws_elasticsearch_domain" "es" {
   vpc_options = ["${local.vpc_configuration[local.vpc_lookup]}"]
 
   cluster_config {
-    dedicated_master_count   = "${var.master_node_count > 0 ? var.master_node_count : ""}"
+    dedicated_master_count   = "${var.master_node_count > 0 ? var.master_node_count : 0 }"
     dedicated_master_enabled = "${var.master_node_count > 0}"
-    dedicated_master_type    = "${var.master_node_count > 0 ? var.master_node_instance_type : ""}"
+    dedicated_master_type    = "${var.master_node_count > 0 ? var.master_node_instance_type : "" }"
     instance_count           = "${var.data_node_count}"
     instance_type            = "${var.data_node_instance_type}"
     zone_awareness_enabled   = true
