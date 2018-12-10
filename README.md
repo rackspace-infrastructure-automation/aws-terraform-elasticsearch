@@ -50,7 +50,7 @@ Full working references are available at [examples](examples)
 | logging_index_slow_logs | A boolean value to determine if logging is enabled for INDEX_SLOW_LOGS. | string | `false` | no |
 | logging_retention | The number of days to retain Cloudwatch Logs for the Elasticsearch cluster. | string | `30` | no |
 | logging_search_slow_logs | A boolean value to determine if logging is enabled for SEARCH_SLOW_LOGS. | string | `false` | no |
-| master_node_count | Number of master nodes in the Elasticsearch cluster.  Allowed values are 3 or 5. | string | `3` | no |
+| master_node_count | Number of master nodes in the Elasticsearch cluster.  Allowed values are 0, 3 or 5. | string | `0` | no |
 | master_node_instance_type | Select master node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | string | `m4.large.elasticsearch` | no |
 | name | The desired name for the Elasticsearch domain. | string | - | yes |
 | security_groups | A list of EC2 security groups to assign to the Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. | list | `<list>` | no |
@@ -67,4 +67,3 @@ Full working references are available at [examples](examples)
 | endpoint | The endpoint for the Elasticsearch cluster |
 | kibana_endpoint | The kibana endpoint for the Elasticsearch cluster |
 | log_group_arn | The ARN for the CloudWatch Log group for this Elasticsearch Cluster |
-

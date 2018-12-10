@@ -100,9 +100,9 @@ variable "logging_search_slow_logs" {
 }
 
 variable "master_node_count" {
-  description = "Number of master nodes in the Elasticsearch cluster.  Allowed values are 3 or 5."
+  description = "Number of master nodes in the Elasticsearch cluster.  Allowed values are 0, 3 or 5."
   type        = "string"
-  default     = 3
+  default     = 0
 }
 
 variable "master_node_instance_type" {
