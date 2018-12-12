@@ -8,7 +8,7 @@ This module creates an ElasticSearch cluster.
 ### Internet accessible endpoint
 ```
 module "elasticsearch" {
- source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.1"
+ source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.2"
 
  name          = "titus-test-es-internet-endpoint"
  ip_whitelist  = ["1.2.3.4"]
@@ -18,7 +18,7 @@ module "elasticsearch" {
 ### VPC accessible endpoint
 ```
 module "elasticsearch" {
- source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.1"
+ source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.2"
 
  name          = "titus-test-es-internet-endpoint"
  vpc_enabled     = true
