@@ -3,20 +3,20 @@
 ###############################################
 
 module "vpc" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.0.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.0.6"
 
   vpc_name = "Test1VPC"
 }
 
 module "sg" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-security_group//?ref=v0.0.4"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-security_group//?ref=v0.0.5"
 
   resource_name = "Test-SG"
   vpc_id        = "${module.vpc.vpc_id}"
 }
 
 module "es_vpc" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.2"
 
   name = "es-vpc-endpoint"
 
