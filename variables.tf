@@ -140,3 +140,9 @@ variable "vpc_enabled" {
   type        = "string"
   default     = false
 }
+
+variable "zone_awareness_enabled" {
+  description = "A boolean value to determine if Zone Awareness is enabled. The number of data nodes must be even if this is `true`."
+  type        = "string"
+  default     = "true"
+}

@@ -29,7 +29,6 @@ module "elasticsearch" {
 
 Full working references are available at [examples](examples)
 
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -58,6 +57,7 @@ Full working references are available at [examples](examples)
 | subnets | Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. | list | `<list>` | no |
 | tags | Additional tags to be added to the Elasticsearch cluster. | map | `<map>` | no |
 | vpc_enabled | A boolean value to determine if the Elasticsearch cluster is VPC enabled. | string | `false` | no |
+| zone_awareness_enabled | A boolean value to determine if Zone Awareness is enabled. The number of data nodes must be even if this is `true`. | string | `true` | no |
 
 ## Outputs
 
