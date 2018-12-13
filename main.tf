@@ -137,7 +137,7 @@ resource "aws_elasticsearch_domain" "es" {
     dedicated_master_type    = "${var.master_node_count > 0 ? var.master_node_instance_type : "" }"
     instance_count           = "${var.data_node_count}"
     instance_type            = "${var.data_node_instance_type}"
-    zone_awareness_enabled   = true
+    zone_awareness_enabled   = "${var.zone_awareness_enabled}"
   }
 
   ebs_options {
