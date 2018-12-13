@@ -33,7 +33,7 @@ Full working references are available at [examples](examples)
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| data_node_count | Number of data nodes in the Elasticsearch cluster. | string | `6` | no |
+| data_node_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be an even number. | string | `6` | no |
 | data_node_instance_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | string | `m4.large.elasticsearch` | no |
 | ebs_iops | The number of I/O operations per second (IOPS) that the volume supports. | string | `0` | no |
 | ebs_size | The size of the EBS volume for each data node. | string | `20` | no |
@@ -54,7 +54,7 @@ Full working references are available at [examples](examples)
 | name | The desired name for the Elasticsearch domain. | string | - | yes |
 | security_groups | A list of EC2 security groups to assign to the Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. | list | `<list>` | no |
 | snapshot_start_hour | The hour (0-23) to issue a daily snapshot of Elasticsearch cluster. | string | `0` | no |
-| subnets | Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. | list | `<list>` | no |
+| subnets | Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. If not using Zone Awareness this should be a list of one subnet. | list | `<list>` | no |
 | tags | Additional tags to be added to the Elasticsearch cluster. | map | `<map>` | no |
 | vpc_enabled | A boolean value to determine if the Elasticsearch cluster is VPC enabled. | string | `false` | no |
 | zone_awareness_enabled | A boolean value to determine if Zone Awareness is enabled. The number of data nodes must be even if this is `true`. | string | `true` | no |

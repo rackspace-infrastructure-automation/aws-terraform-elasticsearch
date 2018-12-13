@@ -4,7 +4,7 @@ variable "name" {
 }
 
 variable "data_node_count" {
-  description = "Number of data nodes in the Elasticsearch cluster."
+  description = "Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be an even number."
   type        = "string"
   default     = 6
 }
@@ -124,7 +124,7 @@ variable "snapshot_start_hour" {
 }
 
 variable "subnets" {
-  description = "Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled."
+  description = "Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. If not using Zone Awareness this should be a list of one subnet."
   type        = "list"
   default     = []
 }
