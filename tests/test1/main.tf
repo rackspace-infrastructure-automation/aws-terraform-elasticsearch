@@ -19,13 +19,13 @@ module "es_internet" {
 ###############################################
 
 module "vpc" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork?ref=master"
 
   vpc_name = "Test1VPC"
 }
 
 module "sg" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-security_group//"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-security_group?ref=master"
 
   resource_name = "Test-SG"
   vpc_id        = "${module.vpc.vpc_id}"
@@ -50,7 +50,7 @@ data "aws_kms_alias" "es_kms" {
 }
 
 module "internal_zone" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone//"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone?ref=master"
 
   zone_name     = "mycompany.local"
   environment   = "Development"
