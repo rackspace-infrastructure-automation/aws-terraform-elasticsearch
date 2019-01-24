@@ -3,6 +3,12 @@ variable "name" {
   type        = "string"
 }
 
+variable "create_service_linked_role" {
+  description = "A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present."
+  type        = "string"
+  default     = false
+}
+
 variable "data_node_count" {
   description = "Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be an even number."
   type        = "string"

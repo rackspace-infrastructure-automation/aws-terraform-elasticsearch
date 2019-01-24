@@ -7,9 +7,9 @@ This module creates an ElasticSearch cluster.
 ### Internet accessible endpoint
 ```
 module "elasticsearch" {
- source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.1"
+ source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
 
- name          = "titus-test-es-internet-endpoint"
+ name          = "es-internet-endpoint"
  ip_whitelist  = ["1.2.3.4"]
 }
 ```
@@ -17,9 +17,9 @@ module "elasticsearch" {
 ### VPC accessible endpoint
 ```
 module "elasticsearch" {
- source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.1"
+ source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
 
- name          = "titus-test-es-internet-endpoint"
+ name          = "es-vpc-endpoint"
  vpc_enabled     = true
  security_groups = ["${module.sg.public_web_security_group_id}"]
  subnets         = ["${module.vpc.private_subnets}"]
@@ -28,10 +28,23 @@ module "elasticsearch" {
 
 Full working references are available at [examples](examples)
 
+## Limitation
+Terraform does not create the IAM Service Linked Role for ElasticSearch automatically.  If this role is not present on an account, the `create_service_linked_role` parameter should be set to true for the first ElasticSearch instance.  This will create the required role.  This option should not be set to true on more than a single deployment per account, or it will result in a naming conflict.  If the role is not present an error similar to the following would result:
+
+```
+1 error(s) occurred:
+
+* module.elasticsearch.aws_elasticsearch_domain.es: 1 error(s) occurred:
+
+* aws_elasticsearch_domain.es: Error reading IAM Role AWSServiceRoleForAmazonElasticsearchService: NoSuchEntity: The role with name AWSServiceRoleForAmazonElasticsearchService cannot be found.
+   status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
+```
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| create\_service\_linked\_role | A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present. | string | `"false"` | no |
 | data\_node\_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be an even number. | string | `"6"` | no |
 | data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | string | `"m4.large.elasticsearch"` | no |
 | ebs\_iops | The number of I/O operations per second (IOPS) that the volume supports. | string | `"0"` | no |
