@@ -9,19 +9,19 @@
  ### Internet accessible endpoint
  *```
  *module "elasticsearch" {
- *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.1"
+ *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
  *
- *  name          = "titus-test-es-internet-endpoint"
+ *  name          = "es-internet-endpoint"
  *  ip_whitelist  = ["1.2.3.4"]
  *}
  *```
  *
- ### VPC accessible endpoint
+ *### VPC accessible endpoint
  *```
  *module "elasticsearch" {
- *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.1"
+ *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
  *
- *  name          = "titus-test-es-internet-endpoint"
+ *  name          = "es-vpc-endpoint"
  *  vpc_enabled     = true
  *  security_groups = ["${module.sg.public_web_security_group_id}"]
  *  subnets         = ["${module.vpc.private_subnets}"]
@@ -29,6 +29,18 @@
  *```
  *
  * Full working references are available at [examples](examples)
+ *
+ *## Limitation
+ *Terraform does not create the IAM Service Linked Role for ElasticSearch automatically.  If this role is not present on an account, the `create_service_linked_role` parameter should be set to true for the first ElasticSearch instance.  This will create the required role.  This option should not be set to true on more than a single deployment per account, or it will result in a naming conflict.  If the role is not present an error similar to the following would result:
+ *
+ *```
+ *1 error(s) occurred:
+ *
+ ** module.elasticsearch.aws_elasticsearch_domain.es: 1 error(s) occurred:
+ *
+ ** aws_elasticsearch_domain.es: Error reading IAM Role AWSServiceRoleForAmazonElasticsearchService: NoSuchEntity: The role with name AWSServiceRoleForAmazonElasticsearchService cannot be found.
+ *    status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
+ *```
  */
 
 locals {
@@ -82,6 +94,12 @@ data "aws_iam_policy_document" "policy" {
 
     condition = "${local.policy_condition[local.vpc_lookup]}"
   }
+}
+
+resource "aws_iam_service_linked_role" "slr" {
+  count = "${var.create_service_linked_role ? 1 : 0}"
+
+  aws_service_name = "es.amazonaws.com"
 }
 
 resource "aws_cloudwatch_log_group" "es" {
@@ -169,6 +187,8 @@ resource "aws_elasticsearch_domain" "es" {
       enabled                  = "${var.logging_application_logs}"
     },
   ]
+
+  depends_on = ["aws_iam_service_linked_role.slr"]
 }
 
 data "aws_route53_zone" "hosted_zone" {
