@@ -80,6 +80,7 @@ module "es_all_options" {
   ebs_type = "io1"
 
   internal_record_name = "es-custom"
+  internal_zone_id     = "${module.internal_zone.internal_hosted_zone_id}"
   internal_zone_name   = "${module.internal_zone.internal_hosted_name}"
 
   logging_application_logs = true
