@@ -1,46 +1,48 @@
 /**
  * # aws-terraform-elasticsearch
  *
- *This module creates an ElasticSearch cluster.
+ * This module creates an ElasticSearch cluster.
  *
+ * ## Basic Usage
  *
- *## Basic Usage
+ * ### Internet accessible endpoint
  *
- ### Internet accessible endpoint
- *```
- *module "elasticsearch" {
- *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
+ * ```HCL
+ * module "elasticsearch" {
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.5"
  *
- *  name          = "es-internet-endpoint"
- *  ip_whitelist  = ["1.2.3.4"]
- *}
- *```
+ *   name          = "es-internet-endpoint"
+ *   ip_whitelist  = ["1.2.3.4"]
+ * }
+ * ```
  *
- *### VPC accessible endpoint
- *```
- *module "elasticsearch" {
- *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
+ * ### VPC accessible endpoint
  *
- *  name          = "es-vpc-endpoint"
- *  vpc_enabled     = true
- *  security_groups = ["${module.sg.public_web_security_group_id}"]
- *  subnets         = ["${module.vpc.private_subnets}"]
- *}
- *```
+ * ```HCL
+ * module "elasticsearch" {
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.5"
+ *
+ *   name            = "es-vpc-endpoint"
+ *   vpc_enabled     = true
+ *   security_groups = ["${module.sg.public_web_security_group_id}"]
+ *   subnets         = ["${module.vpc.private_subnets}"]
+ * }
+ * ```
  *
  * Full working references are available at [examples](examples)
  *
- *## Limitation
- *Terraform does not create the IAM Service Linked Role for ElasticSearch automatically.  If this role is not present on an account, the `create_service_linked_role` parameter should be set to true for the first ElasticSearch instance.  This will create the required role.  This option should not be set to true on more than a single deployment per account, or it will result in a naming conflict.  If the role is not present an error similar to the following would result:
+ * ## Limitation
  *
- *```
- *1 error(s) occurred:
+ * Terraform does not create the IAM Service Linked Role for ElasticSearch automatically.  If this role is not present on an account, the `create_service_linked_role` parameter should be set to true for the first ElasticSearch instance.  This will create the required role.  This option should not be set to true on more than a single deployment per account, or it will result in a naming conflict.  If the role is not present an error similar to the following would result:
  *
- ** module.elasticsearch.aws_elasticsearch_domain.es: 1 error(s) occurred:
+ * ```
+ * 1 error(s) occurred:
  *
- ** aws_elasticsearch_domain.es: Error reading IAM Role AWSServiceRoleForAmazonElasticsearchService: NoSuchEntity: The role with name AWSServiceRoleForAmazonElasticsearchService cannot be found.
- *    status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
- *```
+ * * module.elasticsearch.aws_elasticsearch_domain.es: 1 error(s) occurred:
+ *
+ * * aws_elasticsearch_domain.es: Error reading IAM Role AWSServiceRoleForAmazonElasticsearchService: NoSuchEntity: The role with name AWSServiceRoleForAmazonElasticsearchService cannot be found.
+ *     status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
+ * ```
  */
 
 locals {
@@ -191,19 +193,12 @@ resource "aws_elasticsearch_domain" "es" {
   depends_on = ["aws_iam_service_linked_role.slr"]
 }
 
-data "aws_route53_zone" "hosted_zone" {
-  count = "${var.internal_record_name != "" ? 1 : 0}"
-
-  name         = "${var.internal_zone_name}"
-  private_zone = true
-}
-
 resource "aws_route53_record" "zone_record_alias" {
   count = "${var.internal_record_name != "" ? 1 : 0}"
 
-  name    = "${var.internal_record_name}.${data.aws_route53_zone.hosted_zone.name}"
-  records = ["${aws_elasticsearch_domain.es.endpoint}"]
+  name    = "${var.internal_record_name}.${var.internal_zone_name}"
   ttl     = "300"
   type    = "CNAME"
-  zone_id = "${data.aws_route53_zone.hosted_zone.zone_id}"
+  zone_id = "${var.internal_zone_id}"
+  records = ["${aws_elasticsearch_domain.es.endpoint}"]
 }

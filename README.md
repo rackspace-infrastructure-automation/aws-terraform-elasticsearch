@@ -5,30 +5,33 @@ This module creates an ElasticSearch cluster.
 ## Basic Usage
 
 ### Internet accessible endpoint
-```
-module "elasticsearch" {
- source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
 
- name          = "es-internet-endpoint"
- ip_whitelist  = ["1.2.3.4"]
+```HCL
+module "elasticsearch" {
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.5"
+
+  name          = "es-internet-endpoint"
+  ip_whitelist  = ["1.2.3.4"]
 }
 ```
 
 ### VPC accessible endpoint
-```
-module "elasticsearch" {
- source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
 
- name          = "es-vpc-endpoint"
- vpc_enabled     = true
- security_groups = ["${module.sg.public_web_security_group_id}"]
- subnets         = ["${module.vpc.private_subnets}"]
+```HCL
+module "elasticsearch" {
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.5"
+
+  name            = "es-vpc-endpoint"
+  vpc_enabled     = true
+  security_groups = ["${module.sg.public_web_security_group_id}"]
+  subnets         = ["${module.vpc.private_subnets}"]
 }
 ```
 
 Full working references are available at [examples](examples)
 
 ## Limitation
+
 Terraform does not create the IAM Service Linked Role for ElasticSearch automatically.  If this role is not present on an account, the `create_service_linked_role` parameter should be set to true for the first ElasticSearch instance.  This will create the required role.  This option should not be set to true on more than a single deployment per account, or it will result in a naming conflict.  If the role is not present an error similar to the following would result:
 
 ```
@@ -37,7 +40,7 @@ Terraform does not create the IAM Service Linked Role for ElasticSearch automati
 * module.elasticsearch.aws_elasticsearch_domain.es: 1 error(s) occurred:
 
 * aws_elasticsearch_domain.es: Error reading IAM Role AWSServiceRoleForAmazonElasticsearchService: NoSuchEntity: The role with name AWSServiceRoleForAmazonElasticsearchService cannot be found.
-   status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
+    status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
 ```
 
 ## Inputs
@@ -54,8 +57,9 @@ Terraform does not create the IAM Service Linked Role for ElasticSearch automati
 | encryption\_enabled | A boolean value to determine if encryption at rest is enabled for the Elasticsearch cluster. | string | `"false"` | no |
 | encryption\_kms\_key | The KMS key to use for encryption at rest on the Elasticsearch cluster.If omitted and encryption at rest is enabled, the aws/es KMS key is used. | string | `""` | no |
 | environment | Application environment for which this network is being created. Preferred value are Development, Integration, PreProduction, Production, QA, Staging, or Test | string | `"Development"` | no |
-| internal\_record\_name | Record Name for the new Resource Record in the Internal Hosted Zone. i.e. es | string | `""` | no |
-| internal\_zone\_name | TLD for Internal Hosted Zone. i.e. mycompany.local | string | `""` | no |
+| internal\_record\_name | Record Name for the new Resource Record in the Internal Hosted Zone | string | `""` | no |
+| internal\_zone\_id | The Route53 Internal Hosted Zone ID | string | `""` | no |
+| internal\_zone\_name | TLD for Internal Hosted Zone | string | `""` | no |
 | ip\_whitelist | IP Addresses allowed to access the ElasticSearch Cluster.  Should be supplied if Elasticsearch cluster is not VPC enabled. | list | `<list>` | no |
 | logging\_application\_logs | A boolean value to determine if logging is enabled for ES_APPLICATION_LOGS. | string | `"false"` | no |
 | logging\_index\_slow\_logs | A boolean value to determine if logging is enabled for INDEX_SLOW_LOGS. | string | `"false"` | no |

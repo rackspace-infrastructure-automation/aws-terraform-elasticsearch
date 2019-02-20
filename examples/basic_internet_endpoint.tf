@@ -3,7 +3,7 @@
 ####################################################
 
 module "es_internet" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.4"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.5"
 
   name         = "es-internet-endpoint"
   ip_whitelist = ["1.2.3.4"]
