@@ -45,8 +45,14 @@ variable "elasticsearch_version" {
   default     = "6.3"
 }
 
-variable "encryption_enabled" {
-  description = "A boolean value to determine if encryption at rest is enabled for the Elasticsearch cluster."
+variable "encrypt_storage_enabled" {
+  description = "A boolean value to determine if encryption at rest is enabled for the Elasticsearch cluster. Version must be at least 5.1."
+  type        = "string"
+  default     = false
+}
+
+variable "encrypt_traffic_enabled" {
+  description = "A boolean value to determine if encryption for node-to-node traffic is enabled for the Elasticsearch cluster. Version must be at least 6.0."
   type        = "string"
   default     = false
 }
