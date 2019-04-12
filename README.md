@@ -54,7 +54,8 @@ Terraform does not create the IAM Service Linked Role for ElasticSearch automati
 | ebs\_size | The size of the EBS volume for each data node. | string | `"20"` | no |
 | ebs\_type | The EBS volume type to use with the Amazon ES domain, such as standard, gp2, or io1. | string | `"gp2"` | no |
 | elasticsearch\_version | Elasticsearch Version. | string | `"6.3"` | no |
-| encryption\_enabled | A boolean value to determine if encryption at rest is enabled for the Elasticsearch cluster. | string | `"false"` | no |
+| encrypt\_storage\_enabled | A boolean value to determine if encryption at rest is enabled for the Elasticsearch cluster. | string | `"false"` | no |
+| encrypt\_traffic\_enabled | A boolean value to determine if encryption for node-to-node traffic is enabled for the Elasticsearch cluster. | string | `"false"` | no |
 | encryption\_kms\_key | The KMS key to use for encryption at rest on the Elasticsearch cluster.If omitted and encryption at rest is enabled, the aws/es KMS key is used. | string | `""` | no |
 | environment | Application environment for which this network is being created. Preferred value are Development, Integration, PreProduction, Production, QA, Staging, or Test | string | `"Development"` | no |
 | internal\_record\_name | Record Name for the new Resource Record in the Internal Hosted Zone | string | `""` | no |

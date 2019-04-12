@@ -29,8 +29,9 @@ module "es_all_options" {
   master_node_count         = "5"
   master_node_instance_type = "r4.large.elasticsearch"
 
-  encryption_enabled = true
-  encryption_kms_key = "${data.aws_kms_alias.es_kms.target_key_arn}"
+  encrypt_storage_enabled = true
+  encrypt_traffic_enabled = true
+  encryption_kms_key      = "${data.aws_kms_alias.es_kms.target_key_arn}"
 
   ebs_iops = "1000"
   ebs_size = "50"

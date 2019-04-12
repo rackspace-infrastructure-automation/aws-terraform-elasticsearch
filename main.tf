@@ -168,8 +168,12 @@ resource "aws_elasticsearch_domain" "es" {
   }
 
   encrypt_at_rest {
-    enabled    = "${var.encryption_enabled}"
+    enabled    = "${var.encrypt_storage_enabled}"
     kms_key_id = "${var.encryption_kms_key}"
+  }
+
+  node_to_node_encryption {
+    enabled = "${var.encrypt_traffic_enabled}"
   }
 
   log_publishing_options = [
