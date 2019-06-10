@@ -7,7 +7,7 @@ data "aws_kms_alias" "es_kms" {
 }
 
 module "internal_zone" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone//?ref=v.0.0.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone//?ref=v.0.0.3"
 
   zone_name     = "mycompany.local"
   environment   = "Development"
@@ -15,7 +15,7 @@ module "internal_zone" {
 }
 
 module "es_all_options" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.2"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.6"
 
   name = "es-custom"
 
@@ -43,6 +43,12 @@ module "es_all_options" {
   logging_index_slow_logs  = true
   logging_retention        = 14
   logging_search_slow_logs = true
+
+  snapshot_start_hour = 21
+
+  vpc_enabled = true
+  subnets = ["subnet-0146733139bfe351b", "subnet-04362ec0a2a4b1382"]
+  security_groups = ["sg-0024aee5bbfbaddbc", "sg-018f1576271f11f3e"]
 
   tags = {
     Tag1 = "Value1"
