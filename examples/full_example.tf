@@ -46,8 +46,8 @@ module "es_all_options" {
 
   snapshot_start_hour = 21
 
-  vpc_enabled = true
-  subnets = ["subnet-0146733139bfe351b", "subnet-04362ec0a2a4b1382"]
+  vpc_enabled     = true
+  subnets         = ["subnet-0146733139bfe351b", "subnet-04362ec0a2a4b1382"]
   security_groups = ["sg-0024aee5bbfbaddbc", "sg-018f1576271f11f3e"]
 
   tags = {
