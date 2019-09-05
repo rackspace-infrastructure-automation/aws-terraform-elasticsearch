@@ -9,7 +9,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.5"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
  *
  *   name          = "es-internet-endpoint"
  *   ip_whitelist  = ["1.2.3.4"]
@@ -20,7 +20,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.5"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
  *
  *   name            = "es-vpc-endpoint"
  *   vpc_enabled     = true
@@ -77,6 +77,8 @@ locals {
 
   vpc_lookup     = "${var.vpc_enabled ? "vpc" : "standard"}"
   enable_logging = "${var.logging_application_logs || var.logging_index_slow_logs || var.logging_search_slow_logs}"
+
+  za_subnet_count = "${length(var.subnets) >= 3 ? 3 : 2}"
 }
 
 data "aws_region" "current" {}
@@ -158,6 +160,10 @@ resource "aws_elasticsearch_domain" "es" {
     instance_count           = "${var.data_node_count}"
     instance_type            = "${var.data_node_instance_type}"
     zone_awareness_enabled   = "${var.zone_awareness_enabled}"
+
+    zone_awareness_config {
+      availability_zone_count = "${var.zone_awareness_enabled == "false" ? 2 : local.za_subnet_count}"
+    }
   }
 
   ebs_options {

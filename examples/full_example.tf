@@ -15,13 +15,13 @@ module "internal_zone" {
 }
 
 module "es_all_options" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.6"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
 
   name = "es-custom"
 
   ip_whitelist = ["1.2.3.4"]
 
-  elasticsearch_version = "6.2"
+  elasticsearch_version = "7.1"
   environment           = "Production"
 
   data_node_count           = "8"

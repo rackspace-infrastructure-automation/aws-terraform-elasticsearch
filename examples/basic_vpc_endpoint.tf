@@ -16,7 +16,7 @@ module "sg" {
 }
 
 module "es_vpc" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.6"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
 
   name = "es-vpc-endpoint"
 

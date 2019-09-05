@@ -10,7 +10,7 @@ variable "create_service_linked_role" {
 }
 
 variable "data_node_count" {
-  description = "Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be an even number."
+  description = "Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets."
   type        = "string"
   default     = 6
 }
@@ -18,7 +18,7 @@ variable "data_node_count" {
 variable "data_node_instance_type" {
   description = "Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types."
   type        = "string"
-  default     = "m4.large.elasticsearch"
+  default     = "m5.large.elasticsearch"
 }
 
 variable "ebs_iops" {
@@ -30,7 +30,7 @@ variable "ebs_iops" {
 variable "ebs_size" {
   description = "The size of the EBS volume for each data node."
   type        = "string"
-  default     = 20
+  default     = 35
 }
 
 variable "ebs_type" {
@@ -42,7 +42,7 @@ variable "ebs_type" {
 variable "elasticsearch_version" {
   description = "Elasticsearch Version."
   type        = "string"
-  default     = "6.3"
+  default     = "7.1"
 }
 
 variable "encrypt_storage_enabled" {
@@ -126,7 +126,7 @@ variable "master_node_count" {
 variable "master_node_instance_type" {
   description = "Select master node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types."
   type        = "string"
-  default     = "m4.large.elasticsearch"
+  default     = "m5.large.elasticsearch"
 }
 
 variable "security_groups" {
