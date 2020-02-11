@@ -1,17 +1,22 @@
-#########################################################
-# Customized Internet accessible Elasticsearch endpoint #
-#########################################################
+terraform {
+  required_version = ">= 0.12"
+}
+
+provider "aws" {
+  version = "~> 2.2"
+  region  = "us-west-2"
+}
 
 data "aws_kms_alias" "es_kms" {
   name = "alias/aws/es"
 }
 
 module "internal_zone" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone//?ref=v.0.0.3"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone//?ref=v0.0.3"
 
   zone_name     = "mycompany.local"
   environment   = "Development"
-  target_vpc_id = "${module.vpc.vpc_id}"
+  target_vpc_id = module.vpc.vpc_id
 }
 
 module "es_all_options" {
@@ -31,15 +36,15 @@ module "es_all_options" {
 
   encrypt_storage_enabled = true
   encrypt_traffic_enabled = true
-  encryption_kms_key      = "${data.aws_kms_alias.es_kms.target_key_arn}"
+  encryption_kms_key      = data.aws_kms_alias.es_kms.target_key_arn
 
   ebs_iops = "1000"
   ebs_size = "50"
   ebs_type = "io1"
 
   internal_record_name = "es-custom"
-  internal_zone_id     = "${module.internal_zone.internal_hosted_name}"
-  internal_zone_name   = "${module.internal_zone.internal_hosted_name}"
+  internal_zone_id     = module.internal_zone.internal_hosted_name
+  internal_zone_name   = module.internal_zone.internal_hosted_name
 
   logging_application_logs = true
   logging_index_slow_logs  = true

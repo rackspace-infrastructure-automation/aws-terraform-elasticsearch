@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.12"
+}
+
 provider "aws" {
   version = "~> 2.2"
   region  = "us-west-2"
@@ -12,7 +16,7 @@ resource "random_string" "r_string" {
 }
 
 module "vpc" {
-  source   = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork?ref=master"
+  source   = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=master"
   az_count = "3"
   vpc_name = "ES-VPC-${random_string.r_string.result}"
 }
@@ -21,7 +25,7 @@ module "sg" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-security_group?ref=master"
 
   resource_name = "ES-VPC-SG-${random_string.r_string.result}"
-  vpc_id        = "${module.vpc.vpc_id}"
+  vpc_id        = module.vpc.vpc_id
 }
 
 ####################################################
@@ -34,8 +38,8 @@ module "es_vpc" {
   name = "es-vpc-endpoint-${random_string.r_string.result}"
 
   vpc_enabled     = true
-  security_groups = ["${module.sg.public_web_security_group_id}"]
-  subnets         = ["${module.vpc.private_subnets}"]
+  security_groups = [module.sg.public_web_security_group_id]
+  subnets         = [module.vpc.private_subnets]
 }
 
 #############################################
@@ -47,11 +51,11 @@ data "aws_kms_alias" "es_kms" {
 }
 
 module "internal_zone" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone?ref=master"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone?ref=tf_v0.11"
 
   zone_name     = "mycompany-${random_string.r_string.result}.local"
   environment   = "Development"
-  target_vpc_id = "${module.vpc.vpc_id}"
+  target_vpc_id = module.vpc.vpc_id
 }
 
 module "es_all_options" {
@@ -63,7 +67,7 @@ module "es_all_options" {
 
   elasticsearch_version = "7.1"
   environment           = "Development"
-  subnets               = ["${module.vpc.private_subnets}"]
+  subnets               = [module.vpc.private_subnets]
 
   data_node_count           = "6"
   data_node_instance_type   = "m5.large.elasticsearch"
@@ -72,15 +76,15 @@ module "es_all_options" {
 
   encrypt_storage_enabled = true
   encrypt_traffic_enabled = true
-  encryption_kms_key      = "${data.aws_kms_alias.es_kms.target_key_arn}"
+  encryption_kms_key      = data.aws_kms_alias.es_kms.target_key_arn
 
   ebs_iops = "1000"
   ebs_size = "35"
   ebs_type = "io1"
 
   internal_record_name = "es-custom"
-  internal_zone_id     = "${module.internal_zone.internal_hosted_zone_id}"
-  internal_zone_name   = "${module.internal_zone.internal_hosted_name}"
+  internal_zone_id     = module.internal_zone.internal_hosted_zone_id
+  internal_zone_name   = module.internal_zone.internal_hosted_name
 
   logging_application_logs = true
   logging_index_slow_logs  = true
