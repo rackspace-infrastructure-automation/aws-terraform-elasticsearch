@@ -18,14 +18,14 @@ resource "random_string" "r_string" {
 module "vpc" {
   source   = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=master"
   az_count = "3"
-  vpc_name = "ES-VPC-${random_string.r_string.result}"
+  name     = "ES-VPC-${random_string.r_string.result}"
 }
 
 module "sg" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-security_group?ref=master"
 
-  resource_name = "ES-VPC-SG-${random_string.r_string.result}"
-  vpc_id        = module.vpc.vpc_id
+  name   = "ES-VPC-SG-${random_string.r_string.result}"
+  vpc_id = module.vpc.vpc_id
 }
 
 ####################################################
@@ -39,7 +39,7 @@ module "es_vpc" {
 
   vpc_enabled     = true
   security_groups = [module.sg.public_web_security_group_id]
-  subnets         = [module.vpc.private_subnets]
+  subnets         = module.vpc.private_subnets
 }
 
 #############################################
@@ -51,11 +51,11 @@ data "aws_kms_alias" "es_kms" {
 }
 
 module "internal_zone" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone?ref=tf_v0.11"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone?ref=master"
 
-  zone_name     = "mycompany-${random_string.r_string.result}.local"
-  environment   = "Development"
-  target_vpc_id = module.vpc.vpc_id
+  name        = "mycompany-${random_string.r_string.result}.local"
+  environment = "Development"
+  vpc_id      = module.vpc.vpc_id
 }
 
 module "es_all_options" {
@@ -67,7 +67,7 @@ module "es_all_options" {
 
   elasticsearch_version = "7.1"
   environment           = "Development"
-  subnets               = [module.vpc.private_subnets]
+  subnets               = module.vpc.private_subnets
 
   data_node_count           = "6"
   data_node_instance_type   = "m5.large.elasticsearch"
