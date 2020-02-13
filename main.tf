@@ -49,22 +49,26 @@ terraform {
   required_version = ">= 0.12"
 
   required_providers {
-    aws = ">= 2.1.0"
+    aws = ">= 2.2.0"
   }
 }
 
 locals {
+  vpc_lookup      = var.vpc_enabled ? "vpc" : "standard"
+  enable_logging  = var.logging_application_logs || var.logging_index_slow_logs || var.logging_search_slow_logs
+  za_subnet_count = length(var.subnets) >= 3 ? 3 : 2
+
   tags = {
+    Environment     = var.environment
     Name            = var.name
     ServiceProvider = "Rackspace"
-    Environment     = var.environment
   }
 
   policy_condition = {
     standard = [{
       test     = "IpAddress"
-      variable = "aws:SourceIp"
       values   = var.ip_whitelist
+      variable = "aws:SourceIp"
     }]
     vpc = []
   }
@@ -78,11 +82,6 @@ locals {
       },
     ]
   }
-
-  vpc_lookup     = var.vpc_enabled ? "vpc" : "standard"
-  enable_logging = var.logging_application_logs || var.logging_index_slow_logs || var.logging_search_slow_logs
-
-  za_subnet_count = length(var.subnets) >= 3 ? 3 : 2
 }
 
 data "aws_region" "current" {
@@ -151,26 +150,13 @@ resource "aws_cloudwatch_log_resource_policy" "es_cloudwatch_policy" {
 }
 
 resource "aws_elasticsearch_domain" "es" {
-  access_policies = data.aws_iam_policy_document.policy.json
+  access_policies       = data.aws_iam_policy_document.policy.json
+  domain_name           = lower(var.name)
+  elasticsearch_version = var.elasticsearch_version
+  tags                  = merge(var.tags, local.tags)
 
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
-  }
-
-  domain_name           = lower(var.name)
-  elasticsearch_version = var.elasticsearch_version
-
-  snapshot_options {
-    automated_snapshot_start_hour = var.snapshot_start_hour
-  }
-
-  tags = merge(var.tags, local.tags)
-  dynamic "vpc_options" {
-    for_each = local.vpc_configuration[local.vpc_lookup]
-    content {
-      security_group_ids = lookup(vpc_options.value, "security_group_ids", null)
-      subnet_ids         = lookup(vpc_options.value, "subnet_ids", null)
-    }
   }
 
   cluster_config {
@@ -198,24 +184,38 @@ resource "aws_elasticsearch_domain" "es" {
     kms_key_id = var.encryption_kms_key
   }
 
-  node_to_node_encryption {
-    enabled = var.encrypt_traffic_enabled
-  }
-
   log_publishing_options {
     log_type                 = "INDEX_SLOW_LOGS"
     cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
     enabled                  = var.logging_index_slow_logs
   }
+
   log_publishing_options {
     log_type                 = "SEARCH_SLOW_LOGS"
     cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
     enabled                  = var.logging_search_slow_logs
   }
+
   log_publishing_options {
     log_type                 = "ES_APPLICATION_LOGS"
     cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
     enabled                  = var.logging_application_logs
+  }
+
+  node_to_node_encryption {
+    enabled = var.encrypt_traffic_enabled
+  }
+
+  snapshot_options {
+    automated_snapshot_start_hour = var.snapshot_start_hour
+  }
+
+  dynamic "vpc_options" {
+    for_each = local.vpc_configuration[local.vpc_lookup]
+    content {
+      security_group_ids = lookup(vpc_options.value, "security_group_ids", null)
+      subnet_ids         = lookup(vpc_options.value, "subnet_ids", null)
+    }
   }
 
   depends_on = [aws_iam_service_linked_role.slr]
@@ -225,8 +225,8 @@ resource "aws_route53_record" "zone_record_alias" {
   count = var.internal_record_name != "" ? 1 : 0
 
   name    = "${var.internal_record_name}.${var.internal_zone_name}"
+  records = [aws_elasticsearch_domain.es.endpoint]
   ttl     = "300"
   type    = "CNAME"
   zone_id = var.internal_zone_id
-  records = [aws_elasticsearch_domain.es.endpoint]
 }
