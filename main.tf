@@ -9,7 +9,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
  *
  *   name          = "es-internet-endpoint"
  *   ip_whitelist  = ["1.2.3.4"]
@@ -20,12 +20,12 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
  *
  *   name            = "es-vpc-endpoint"
  *   vpc_enabled     = true
- *   security_groups = ["${module.sg.public_web_security_group_id}"]
- *   subnets         = ["${module.vpc.private_subnets}"]
+ *   security_groups = [module.sg.public_web_security_group_id]
+ *   subnets         = [module.vpc.private_subnets]
  * }
  * ```
  *

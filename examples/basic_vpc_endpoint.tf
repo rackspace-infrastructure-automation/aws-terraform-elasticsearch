@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.12.0"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.12.1"
 
   name = "Test1VPC"
 }
@@ -21,7 +21,7 @@ module "sg" {
 }
 
 module "es_vpc" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.0"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
 
   name            = "es-vpc-endpoint"
   security_groups = [module.sg.public_web_security_group_id]
