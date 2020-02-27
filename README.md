@@ -8,7 +8,7 @@ This module creates an ElasticSearch cluster.
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
 
   name          = "es-internet-endpoint"
   ip_whitelist  = ["1.2.3.4"]
@@ -19,12 +19,12 @@ module "elasticsearch" {
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
 
   name            = "es-vpc-endpoint"
   vpc_enabled     = true
-  security_groups = ["${module.sg.public_web_security_group_id}"]
-  subnets         = ["${module.vpc.private_subnets}"]
+  security_groups = [module.sg.public_web_security_group_id]
+  subnets         = [module.vpc.private_subnets]
 }
 ```
 
@@ -87,6 +87,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | Name | Description |
 |------|-------------|
 | arn | The ARN for the Elasticsearch cluster |
+| domain\_name | The domain\_name for the Elasticsearch cluster |
 | endpoint | The endpoint for the Elasticsearch cluster |
 | kibana\_endpoint | The kibana endpoint for the Elasticsearch cluster |
 | log\_group\_arn | The ARN for the CloudWatch Log group for this Elasticsearch Cluster |
