@@ -15,7 +15,7 @@ module "internal_zone" {
 }
 
 module "es_all_options" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.7"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.0.8"
 
   name = "es-custom"
 
