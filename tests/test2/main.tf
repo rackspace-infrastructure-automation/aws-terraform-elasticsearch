@@ -47,7 +47,7 @@ data "aws_kms_alias" "es_kms" {
 }
 
 module "internal_zone" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone?ref=master"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone?ref=v0.0.3"
 
   zone_name     = "mycompany-${random_string.r_string.result}.local"
   environment   = "Development"
