@@ -20,7 +20,7 @@ module "internal_zone" {
 }
 
 module "es_all_options" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
 
   data_node_count           = 8
   data_node_instance_type   = "r4.large.elasticsearch"
@@ -42,6 +42,7 @@ module "es_all_options" {
   logging_search_slow_logs  = true
   master_node_count         = 5
   master_node_instance_type = "r4.large.elasticsearch"
+  max_clause_count          = "2048"
   name                      = "es-custom"
   security_groups           = ["sg-0024aee5bbfbaddbc", "sg-018f1576271f11f3e"]
   snapshot_start_hour       = 21

@@ -8,7 +8,7 @@ This module creates an ElasticSearch cluster.
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
 
   name          = "es-internet-endpoint"
   ip_whitelist  = ["1.2.3.4"]
@@ -19,7 +19,7 @@ module "elasticsearch" {
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
 
   name            = "es-vpc-endpoint"
   vpc_enabled     = true
@@ -43,6 +43,13 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
     status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
 ```
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+| aws | >= 2.2.0 |
+
 ## Providers
 
 | Name | Version |
@@ -52,7 +59,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | create\_service\_linked\_role | A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present. | `bool` | `false` | no |
 | data\_node\_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets. | `number` | `6` | no |
 | data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
@@ -74,6 +81,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | logging\_search\_slow\_logs | A boolean value to determine if logging is enabled for SEARCH\_SLOW\_LOGS. | `bool` | `false` | no |
 | master\_node\_count | Number of master nodes in the Elasticsearch cluster.  Allowed values are 0, 3 or 5. | `number` | `3` | no |
 | master\_node\_instance\_type | Select master node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
+| max\_clause\_count | Note the use of a string rather than an integer. Specifies the maximum number of clauses allowed in a Lucene boolean query. 1024 is the default. Queries with more than the permitted number of clauses that result in a TooManyClauses error. | `string` | `"1024"` | no |
 | name | The desired name for the Elasticsearch domain. | `string` | n/a | yes |
 | security\_groups | A list of EC2 security groups to assign to the Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. | `list(string)` | `[]` | no |
 | snapshot\_start\_hour | The hour (0-23) to issue a daily snapshot of Elasticsearch cluster. | `number` | `0` | no |

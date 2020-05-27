@@ -9,7 +9,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
  *
  *   name          = "es-internet-endpoint"
  *   ip_whitelist  = ["1.2.3.4"]
@@ -20,7 +20,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.1"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
  *
  *   name            = "es-vpc-endpoint"
  *   vpc_enabled     = true
@@ -156,7 +156,8 @@ resource "aws_elasticsearch_domain" "es" {
   tags                  = merge(var.tags, local.tags)
 
   advanced_options = {
-    "rest.action.multi.allow_explicit_index" = "true"
+    "rest.action.multi.allow_explicit_index" = "true",
+    "indices.query.bool.max_clause_count"    = var.max_clause_count
   }
 
   cluster_config {
