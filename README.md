@@ -43,13 +43,6 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
     status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
 ```
 
-## Requirements
-
-| Name | Version |
-|------|---------|
-| terraform | >= 0.12 |
-| aws | >= 2.2.0 |
-
 ## Providers
 
 | Name | Version |
@@ -59,7 +52,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+|------|-------------|------|---------|:-----:|
 | create\_service\_linked\_role | A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present. | `bool` | `false` | no |
 | data\_node\_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets. | `number` | `6` | no |
 | data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
