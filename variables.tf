@@ -124,6 +124,12 @@ variable "master_node_instance_type" {
   default     = "m5.large.elasticsearch"
 }
 
+variable "max_clause_count" {
+  description = "Note the use of a string rather than an integer. Specifies the maximum number of clauses allowed in a Lucene boolean query. 1024 is the default. Queries with more than the permitted number of clauses that result in a TooManyClauses error."
+  type        = string
+  default     = "1024"
+}
+
 variable "name" {
   description = "The desired name for the Elasticsearch domain."
   type        = string
