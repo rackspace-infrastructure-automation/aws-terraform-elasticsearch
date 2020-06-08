@@ -4,6 +4,12 @@ variable "create_service_linked_role" {
   default     = false
 }
 
+variable "custom_access_policy" {
+  description = "Use a custom access policy instead of VPC or IP Based."
+  type        = string
+  default     = null
+}
+
 variable "data_node_count" {
   description = "Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets."
   type        = number

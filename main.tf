@@ -150,7 +150,7 @@ resource "aws_cloudwatch_log_resource_policy" "es_cloudwatch_policy" {
 }
 
 resource "aws_elasticsearch_domain" "es" {
-  access_policies       = data.aws_iam_policy_document.policy.json
+  access_policies       = var.custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
   domain_name           = lower(var.name)
   elasticsearch_version = var.elasticsearch_version
   tags                  = merge(var.tags, local.tags)

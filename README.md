@@ -54,6 +54,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
 | create\_service\_linked\_role | A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present. | `bool` | `false` | no |
+| custom\_access\_policy | Use a custom access policy instead of VPC or IP Based. | `string` | n/a | yes |
 | data\_node\_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets. | `number` | `6` | no |
 | data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
 | ebs\_iops | The number of I/O operations per second (IOPS) that the volume supports. | `number` | `0` | no |
