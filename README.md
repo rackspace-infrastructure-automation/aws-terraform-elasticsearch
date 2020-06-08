@@ -48,6 +48,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | Name | Version |
 |------|---------|
 | aws | >= 2.2.0 |
+| random | n/a |
 
 ## Inputs
 

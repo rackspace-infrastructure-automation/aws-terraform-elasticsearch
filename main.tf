@@ -53,6 +53,14 @@ terraform {
   }
 }
 
+resource "random_string" "r_string" {
+  length  = 5
+  upper   = false
+  lower   = true
+  number  = true
+  special = false
+}
+
 locals {
   vpc_lookup      = var.vpc_enabled ? "vpc" : "standard"
   enable_logging  = var.logging_application_logs || var.logging_index_slow_logs || var.logging_search_slow_logs
@@ -146,7 +154,7 @@ resource "aws_cloudwatch_log_resource_policy" "es_cloudwatch_policy" {
   count = local.enable_logging ? 1 : 0
 
   policy_document = element(data.aws_iam_policy_document.es_cloudwatch_policy.*.json, 0)
-  policy_name     = "Elasticsearch-Log-Access"
+  policy_name     = "Elasticsearch-Log-Access-${random_string.r_string.result}"
 }
 
 resource "aws_elasticsearch_domain" "es" {
