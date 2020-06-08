@@ -8,7 +8,7 @@ This module creates an ElasticSearch cluster.
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
 
   name          = "es-internet-endpoint"
   ip_whitelist  = ["1.2.3.4"]
@@ -19,7 +19,7 @@ module "elasticsearch" {
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
 
   name            = "es-vpc-endpoint"
   vpc_enabled     = true
