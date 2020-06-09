@@ -4,10 +4,16 @@ variable "create_service_linked_role" {
   default     = false
 }
 
+variable "use_custom_access_policy" {
+  description = "Use a custom access policy instead of VPC or IP Based. Insert policy in `custom_access_policy`"
+  type        = bool
+  default     = false
+}
+
 variable "custom_access_policy" {
-  description = "Use a custom access policy instead of VPC or IP Based."
+  description = "The custom access policy as string of JSON."
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "data_node_count" {

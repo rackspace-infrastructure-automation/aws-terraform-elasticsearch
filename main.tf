@@ -9,7 +9,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.4"
  *
  *   name          = "es-internet-endpoint"
  *   ip_whitelist  = ["1.2.3.4"]
@@ -20,7 +20,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.4"
  *
  *   name            = "es-vpc-endpoint"
  *   vpc_enabled     = true
@@ -158,7 +158,7 @@ resource "aws_cloudwatch_log_resource_policy" "es_cloudwatch_policy" {
 }
 
 resource "aws_elasticsearch_domain" "es" {
-  access_policies       = var.custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
+  access_policies       = var.use_custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
   domain_name           = lower(var.name)
   elasticsearch_version = var.elasticsearch_version
   tags                  = merge(var.tags, local.tags)
