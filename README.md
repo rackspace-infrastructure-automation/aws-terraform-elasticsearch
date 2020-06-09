@@ -8,7 +8,7 @@ This module creates an ElasticSearch cluster.
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.4"
 
   name          = "es-internet-endpoint"
   ip_whitelist  = ["1.2.3.4"]
@@ -19,7 +19,7 @@ module "elasticsearch" {
 
 ```HCL
 module "elasticsearch" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.4"
 
   name            = "es-vpc-endpoint"
   vpc_enabled     = true
@@ -55,7 +55,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
 | create\_service\_linked\_role | A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present. | `bool` | `false` | no |
-| custom\_access\_policy | Use a custom access policy instead of VPC or IP Based. | `string` | n/a | yes |
+| custom\_access\_policy | The custom access policy as string of JSON. | `string` | `""` | no |
 | data\_node\_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets. | `number` | `6` | no |
 | data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
 | ebs\_iops | The number of I/O operations per second (IOPS) that the volume supports. | `number` | `0` | no |
@@ -82,6 +82,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | snapshot\_start\_hour | The hour (0-23) to issue a daily snapshot of Elasticsearch cluster. | `number` | `0` | no |
 | subnets | Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. If not using Zone Awareness this should be a list of one subnet. | `list(string)` | `[]` | no |
 | tags | Additional tags to be added to the Elasticsearch cluster. | `map(string)` | `{}` | no |
+| use\_custom\_access\_policy | Use a custom access policy instead of VPC or IP Based. Insert policy in `custom_access_policy` | `bool` | `false` | no |
 | vpc\_enabled | A boolean value to determine if the Elasticsearch cluster is VPC enabled. | `bool` | `false` | no |
 | zone\_awareness\_enabled | A boolean value to determine if Zone Awareness is enabled. The number of data nodes must be even if this is `true`. | `bool` | `true` | no |
 

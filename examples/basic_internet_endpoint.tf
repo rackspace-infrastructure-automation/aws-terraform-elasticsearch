@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "es_internet" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.4"
 
   ip_whitelist = ["1.2.3.4"]
   name         = "es-internet-endpoint"
