@@ -9,7 +9,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
  *
  *   name          = "es-internet-endpoint"
  *   ip_whitelist  = ["1.2.3.4"]
@@ -20,7 +20,7 @@
  *
  * ```HCL
  * module "elasticsearch" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.2"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.3"
  *
  *   name            = "es-vpc-endpoint"
  *   vpc_enabled     = true
@@ -51,6 +51,14 @@ terraform {
   required_providers {
     aws = ">= 2.2.0"
   }
+}
+
+resource "random_string" "r_string" {
+  length  = 5
+  upper   = false
+  lower   = true
+  number  = true
+  special = false
 }
 
 locals {
@@ -146,11 +154,11 @@ resource "aws_cloudwatch_log_resource_policy" "es_cloudwatch_policy" {
   count = local.enable_logging ? 1 : 0
 
   policy_document = element(data.aws_iam_policy_document.es_cloudwatch_policy.*.json, 0)
-  policy_name     = "Elasticsearch-Log-Access"
+  policy_name     = "Elasticsearch-Log-Access-${random_string.r_string.result}"
 }
 
 resource "aws_elasticsearch_domain" "es" {
-  access_policies       = data.aws_iam_policy_document.policy.json
+  access_policies       = var.custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
   domain_name           = lower(var.name)
   elasticsearch_version = var.elasticsearch_version
   tags                  = merge(var.tags, local.tags)
