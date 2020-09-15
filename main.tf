@@ -139,10 +139,10 @@ data "aws_iam_policy_document" "es_cloudwatch_policy" {
   count = local.enable_logging ? 1 : 0
 
   statement {
-    actions   = ["logs:PutLogEvents", "logs:PutLogEventsBatch", "logs:CreateLogStream"]
-    effect    = "Allow"
-    resources = [element(concat(aws_cloudwatch_log_group.es.*.arn, ["*"]), 0)]
-
+    actions = ["logs:PutLogEvents", "logs:CreateLogStream"]
+    effect  = "Allow"
+    //    resources = [element(concat(aws_cloudwatch_log_group.es.*.arn, ["*"]), 0)]
+    resources = ["arn:aws:logs:us-west-2:221212855358:log-group:mpc-data*"]
     principals {
       identifiers = ["es.amazonaws.com"]
       type        = "Service"
