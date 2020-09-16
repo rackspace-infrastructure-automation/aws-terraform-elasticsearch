@@ -142,7 +142,7 @@ data "aws_iam_policy_document" "es_cloudwatch_policy" {
     actions = ["logs:PutLogEvents", "logs:CreateLogStream"]
     effect  = "Allow"
     //    resources = [element(concat(aws_cloudwatch_log_group.es.*.arn, ["*"]), 0)]
-    resources = ["arn:aws:logs:us-west-2:221212855358:log-group:mpc-data*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:*"]
     principals {
       identifiers = ["es.amazonaws.com"]
       type        = "Service"
