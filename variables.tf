@@ -182,3 +182,9 @@ variable "zone_awareness_enabled" {
   type        = bool
   default     = true
 }
+
+variable "prevent_destroy" {
+  description = "A boolean on whether to allow destruction of the cluster resource"
+  type        = bool
+  default     = false
+}

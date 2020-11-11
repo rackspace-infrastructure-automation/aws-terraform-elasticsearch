@@ -228,6 +228,10 @@ resource "aws_elasticsearch_domain" "es" {
   }
 
   depends_on = [aws_iam_service_linked_role.slr]
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
+  }
 }
 
 resource "aws_route53_record" "zone_record_alias" {
