@@ -158,7 +158,7 @@ resource "aws_cloudwatch_log_resource_policy" "es_cloudwatch_policy" {
 }
 
 resource "aws_elasticsearch_domain" "es" {
-  count = var.prevent_destroy ? 1:0
+  count                 = var.prevent_destroy ? 1 : 0
   access_policies       = var.use_custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
   domain_name           = lower(var.name)
   elasticsearch_version = var.elasticsearch_version
@@ -236,7 +236,7 @@ resource "aws_elasticsearch_domain" "es" {
 }
 
 resource "aws_elasticsearch_domain_destroy" "es" {
-  count = var.prevent_destroy ? 0:1
+  count                 = var.prevent_destroy ? 0 : 1
   access_policies       = var.use_custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
   domain_name           = lower(var.name)
   elasticsearch_version = var.elasticsearch_version
