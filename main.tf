@@ -230,7 +230,7 @@ resource "aws_elasticsearch_domain" "es" {
   depends_on = [aws_iam_service_linked_role.slr]
 
   lifecycle {
-    prevent_destroy = var.prevent_destroy
+    prevent_destroy = var.prevent_destroy ? true : false
   }
 }
 
