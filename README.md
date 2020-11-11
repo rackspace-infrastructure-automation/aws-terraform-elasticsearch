@@ -78,6 +78,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | master\_node\_instance\_type | Select master node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
 | max\_clause\_count | Note the use of a string rather than an integer. Specifies the maximum number of clauses allowed in a Lucene boolean query. 1024 is the default. Queries with more than the permitted number of clauses that result in a TooManyClauses error. | `string` | `"1024"` | no |
 | name | The desired name for the Elasticsearch domain. | `string` | n/a | yes |
+| prevent\_destroy | A boolean on whether to allow destruction of the cluster resource | `bool` | `false` | no |
 | security\_groups | A list of EC2 security groups to assign to the Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. | `list(string)` | `[]` | no |
 | snapshot\_start\_hour | The hour (0-23) to issue a daily snapshot of Elasticsearch cluster. | `number` | `0` | no |
 | subnets | Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. If not using Zone Awareness this should be a list of one subnet. | `list(string)` | `[]` | no |
