@@ -317,7 +317,7 @@ resource "aws_route53_record" "zone_record_alias" {
   count = var.internal_record_name != "" ? 1 : 0
 
   name    = "${var.internal_record_name}.${var.internal_zone_name}"
-  records = [aws_elasticsearch_domain.es.*.endpoint]
+  records = aws_elasticsearch_domain.es.*.endpoint
   ttl     = "300"
   type    = "CNAME"
   zone_id = var.internal_zone_id
