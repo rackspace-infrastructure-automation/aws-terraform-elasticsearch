@@ -158,84 +158,6 @@ resource "aws_cloudwatch_log_resource_policy" "es_cloudwatch_policy" {
 }
 
 resource "aws_elasticsearch_domain" "es" {
-  count                 = var.prevent_destroy ? 1 : 0
-  access_policies       = var.use_custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
-  domain_name           = lower(var.name)
-  elasticsearch_version = var.elasticsearch_version
-  tags                  = merge(var.tags, local.tags)
-
-  advanced_options = {
-    "rest.action.multi.allow_explicit_index" = "true",
-    "indices.query.bool.max_clause_count"    = var.max_clause_count
-  }
-
-  cluster_config {
-    dedicated_master_count   = var.master_node_count > 0 ? var.master_node_count : 0
-    dedicated_master_enabled = var.master_node_count > 0
-    dedicated_master_type    = var.master_node_count > 0 ? var.master_node_instance_type : ""
-    instance_count           = var.data_node_count
-    instance_type            = var.data_node_instance_type
-    zone_awareness_enabled   = var.zone_awareness_enabled
-
-    zone_awareness_config {
-      availability_zone_count = var.zone_awareness_enabled == "false" ? 2 : local.za_subnet_count
-    }
-  }
-
-  ebs_options {
-    ebs_enabled = true
-    iops        = lower(var.ebs_type) == "io1" ? var.ebs_iops : 0
-    volume_size = var.ebs_size
-    volume_type = lower(var.ebs_type)
-  }
-
-  encrypt_at_rest {
-    enabled    = var.encrypt_storage_enabled
-    kms_key_id = var.encryption_kms_key
-  }
-
-  log_publishing_options {
-    log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
-    enabled                  = var.logging_index_slow_logs
-  }
-
-  log_publishing_options {
-    log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
-    enabled                  = var.logging_search_slow_logs
-  }
-
-  log_publishing_options {
-    log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
-    enabled                  = var.logging_application_logs
-  }
-
-  node_to_node_encryption {
-    enabled = var.encrypt_traffic_enabled
-  }
-
-  snapshot_options {
-    automated_snapshot_start_hour = var.snapshot_start_hour
-  }
-
-  dynamic "vpc_options" {
-    for_each = local.vpc_configuration[local.vpc_lookup]
-    content {
-      security_group_ids = lookup(vpc_options.value, "security_group_ids", null)
-      subnet_ids         = lookup(vpc_options.value, "subnet_ids", null)
-    }
-  }
-
-  depends_on = [aws_iam_service_linked_role.slr]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_elasticsearch_domain" "es_domain_destroyable" {
   count                 = var.prevent_destroy ? 0 : 1
   access_policies       = var.use_custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
   domain_name           = lower(var.name)
@@ -310,6 +232,84 @@ resource "aws_elasticsearch_domain" "es_domain_destroyable" {
 
   lifecycle {
     prevent_destroy = false
+  }
+}
+
+resource "aws_elasticsearch_domain" "es_domain_undestroyable" {
+  count                 = var.prevent_destroy ? 1 : 0
+  access_policies       = var.use_custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
+  domain_name           = lower(var.name)
+  elasticsearch_version = var.elasticsearch_version
+  tags                  = merge(var.tags, local.tags)
+
+  advanced_options = {
+    "rest.action.multi.allow_explicit_index" = "true",
+    "indices.query.bool.max_clause_count"    = var.max_clause_count
+  }
+
+  cluster_config {
+    dedicated_master_count   = var.master_node_count > 0 ? var.master_node_count : 0
+    dedicated_master_enabled = var.master_node_count > 0
+    dedicated_master_type    = var.master_node_count > 0 ? var.master_node_instance_type : ""
+    instance_count           = var.data_node_count
+    instance_type            = var.data_node_instance_type
+    zone_awareness_enabled   = var.zone_awareness_enabled
+
+    zone_awareness_config {
+      availability_zone_count = var.zone_awareness_enabled == "false" ? 2 : local.za_subnet_count
+    }
+  }
+
+  ebs_options {
+    ebs_enabled = true
+    iops        = lower(var.ebs_type) == "io1" ? var.ebs_iops : 0
+    volume_size = var.ebs_size
+    volume_type = lower(var.ebs_type)
+  }
+
+  encrypt_at_rest {
+    enabled    = var.encrypt_storage_enabled
+    kms_key_id = var.encryption_kms_key
+  }
+
+  log_publishing_options {
+    log_type                 = "INDEX_SLOW_LOGS"
+    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
+    enabled                  = var.logging_index_slow_logs
+  }
+
+  log_publishing_options {
+    log_type                 = "SEARCH_SLOW_LOGS"
+    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
+    enabled                  = var.logging_search_slow_logs
+  }
+
+  log_publishing_options {
+    log_type                 = "ES_APPLICATION_LOGS"
+    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
+    enabled                  = var.logging_application_logs
+  }
+
+  node_to_node_encryption {
+    enabled = var.encrypt_traffic_enabled
+  }
+
+  snapshot_options {
+    automated_snapshot_start_hour = var.snapshot_start_hour
+  }
+
+  dynamic "vpc_options" {
+    for_each = local.vpc_configuration[local.vpc_lookup]
+    content {
+      security_group_ids = lookup(vpc_options.value, "security_group_ids", null)
+      subnet_ids         = lookup(vpc_options.value, "subnet_ids", null)
+    }
+  }
+
+  depends_on = [aws_iam_service_linked_role.slr]
+
+  lifecycle {
+    prevent_destroy = true
   }
 }
 
