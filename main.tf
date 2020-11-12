@@ -235,7 +235,7 @@ resource "aws_elasticsearch_domain" "es" {
   }
 }
 
-resource "aws_elasticsearch" "es_domain_destroyable" {
+resource "aws_elasticsearch_domain" "es_domain_destroyable" {
   count                 = var.prevent_destroy ? 0 : 1
   access_policies       = var.use_custom_access_policy ? var.custom_access_policy : data.aws_iam_policy_document.policy.json
   domain_name           = lower(var.name)
@@ -317,7 +317,7 @@ resource "aws_route53_record" "zone_record_alias" {
   count = var.internal_record_name != "" ? 1 : 0
 
   name    = "${var.internal_record_name}.${var.internal_zone_name}"
-  records = [aws_elasticsearch_domain.es.endpoint]
+  records = [aws_elasticsearch_domain.es.*.endpoint]
   ttl     = "300"
   type    = "CNAME"
   zone_id = var.internal_zone_id
