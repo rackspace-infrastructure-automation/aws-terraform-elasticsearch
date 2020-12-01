@@ -3,8 +3,8 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.2"
-  region  = "us-west-2"
+  version = "~> 3.0"
+  region  = "us-west-1"
 }
 
 resource "random_string" "r_string" {
@@ -18,7 +18,7 @@ resource "random_string" "r_string" {
 module "vpc" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=master"
 
-  az_count = 3
+  az_count = 2
   name     = "ES-VPC-${random_string.r_string.result}"
 }
 
@@ -61,28 +61,28 @@ module "internal_zone" {
 module "es_all_options" {
   source = "../../module"
 
-  data_node_count           = 6
-  data_node_instance_type   = "m5.large.elasticsearch"
-  ebs_iops                  = 1000
-  ebs_size                  = 35
-  ebs_type                  = "io1"
-  elasticsearch_version     = "7.1"
-  encrypt_storage_enabled   = true
-  encrypt_traffic_enabled   = true
-  encryption_kms_key        = data.aws_kms_alias.es_kms.target_key_arn
-  environment               = "Development"
-  internal_record_name      = "es-custom"
-  internal_zone_id          = module.internal_zone.internal_hosted_zone_id
-  internal_zone_name        = module.internal_zone.internal_hosted_name
-  ip_whitelist              = ["1.2.3.4"]
-  logging_application_logs  = true
-  logging_index_slow_logs   = true
-  logging_retention         = 7
-  logging_search_slow_logs  = true
-  master_node_count         = 3
-  master_node_instance_type = "m5.large.elasticsearch"
-  name                      = "es-custom3az-${random_string.r_string.result}"
-  subnets                   = module.vpc.private_subnets
+  data_node_count            = 6
+  data_node_instance_type    = "m5.large.elasticsearch"
+  ebs_iops                   = 1000
+  ebs_size                   = 35
+  ebs_type                   = "io1"
+  elasticsearch_version      = "7.1"
+  encrypt_storage_enabled    = true
+  encrypt_traffic_enabled    = true
+  encryption_kms_key         = data.aws_kms_alias.es_kms.target_key_arn
+  environment                = "Development"
+  internal_record_name       = "es-custom"
+  internal_zone_id           = module.internal_zone.internal_hosted_zone_id
+  internal_zone_name         = module.internal_zone.internal_hosted_name
+  ip_whitelist               = ["1.2.3.4"]
+  logging_application_logs   = true
+  logging_index_slow_logs    = true
+  logging_retention          = 7
+  logging_search_slow_logs   = true
+  master_node_count          = 3
+  master_node_instance_type  = "m5.large.elasticsearch"
+  name                       = "es-custom3az-${random_string.r_string.result}"
+  subnets                    = module.vpc.private_subnets
 
   tags = {
     Tag1 = "Value1"
