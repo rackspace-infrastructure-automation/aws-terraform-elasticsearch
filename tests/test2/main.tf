@@ -3,8 +3,8 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.2"
-  region  = "us-west-2"
+  version = "~> 3.0"
+  region  = "us-west-1"
 }
 
 resource "random_string" "r_string" {
@@ -18,7 +18,7 @@ resource "random_string" "r_string" {
 module "vpc" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=master"
 
-  az_count = 3
+  az_count = 2
   name     = "ES-VPC-${random_string.r_string.result}"
 }
 
