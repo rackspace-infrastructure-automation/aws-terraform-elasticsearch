@@ -85,7 +85,7 @@ module "es_all_options" {
   subnets                   = module.vpc.private_subnets
 
   tags = {
-    Tag1 = "Value1"
+    Tag1 = "Value12"
     Tag2 = "Value2"
   }
 }
