@@ -20,7 +20,7 @@ resource "random_string" "r_string" {
 ####################################################
 
 module "es_internet" {
-  source = "../../"
+  source = "../../module"
 
   ip_whitelist = ["1.2.3.4"]
   name         = "es-internet-endpoint-${random_string.r_string.result}"
