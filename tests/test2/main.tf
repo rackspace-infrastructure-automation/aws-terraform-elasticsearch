@@ -81,7 +81,7 @@ module "es_all_options" {
   logging_search_slow_logs  = true
   master_node_count         = 3
   master_node_instance_type = "m5.large.elasticsearch"
-  name                      = "es-custom3az-${random_string.r_string.result}"
+  name                      = "es-custom3azv13-${random_string.r_string.result}"
   subnets                   = module.vpc.private_subnets
 
   tags = {

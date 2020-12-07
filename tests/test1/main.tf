@@ -23,5 +23,5 @@ module "es_internet" {
   source = "../../module"
 
   ip_whitelist = ["1.2.3.4"]
-  name         = "es-internet-endpoint-${random_string.r_string.result}"
+  name         = "es-internet-endpointv13-${random_string.r_string.result}"
 }
