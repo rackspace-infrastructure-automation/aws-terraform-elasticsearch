@@ -133,7 +133,7 @@ data "aws_iam_policy_document" "es_cloudwatch_policy" {
   statement {
     actions   = ["logs:PutLogEvents", "logs:CreateLogStream"]
     effect    = "Allow"
-    resources = [element(concat(aws_cloudwatch_log_group.es.*.arn, ["*"]), 0)]
+    resources = ["${element(concat(aws_cloudwatch_log_group.es.*.arn, ["*"]), 0)}:*"]
 
     principals {
       identifiers = ["es.amazonaws.com"]
@@ -187,19 +187,19 @@ resource "aws_elasticsearch_domain" "es" {
 
   log_publishing_options {
     log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
+    cloudwatch_log_group_arn = "${element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)}:*"
     enabled                  = var.logging_index_slow_logs
   }
 
   log_publishing_options {
     log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
+    cloudwatch_log_group_arn = "${element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)}:*"
     enabled                  = var.logging_search_slow_logs
   }
 
   log_publishing_options {
     log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)
+    cloudwatch_log_group_arn = "${element(concat(aws_cloudwatch_log_group.es.*.arn, [""]), 0)}:*"
     enabled                  = var.logging_application_logs
   }
 
