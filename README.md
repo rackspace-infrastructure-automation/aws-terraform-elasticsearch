@@ -85,7 +85,7 @@ No Modules.
 | data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"t2.small.elasticsearch"` | no |
 | ebs\_iops | The number of I/O operations per second (IOPS) that the volume supports. | `number` | `0` | no |
 | ebs\_size | The size of the EBS volume for each data node. | `number` | `35` | no |
-| ebs\_type | The EBS volume type to use with the Amazon ES domain, such as standard, gp2, or io1. | `string` | `"gp2"` | no |
+| ebs\_type | The EBS volume type to use with the Amazon ES domain, such as standard, gp3, or io1. | `string` | `"gp3"` | no |
 | elasticsearch\_version | Elasticsearch Version. | `string` | `"7.10"` | no |
 | encrypt\_storage\_enabled | A boolean value to determine if encryption at rest is enabled for the Elasticsearch cluster. Version must be at least 5.1. | `bool` | `false` | no |
 | encrypt\_traffic\_enabled | A boolean value to determine if encryption for node-to-node traffic is enabled for the Elasticsearch cluster. Version must be at least 6.0. | `bool` | `false` | no |

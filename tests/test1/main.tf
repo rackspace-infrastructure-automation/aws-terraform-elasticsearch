@@ -50,10 +50,6 @@ module "es_vpc" {
 # Customized VPC 3AZ Elasticsearch endpoint #
 #############################################
 
-data "aws_kms_alias" "es_kms" {
-  name = "alias/aws/es"
-}
-
 resource "aws_route53_zone" "internal_zone" {
   name = "mycompany-${random_string.r_string.result}.local"
 
@@ -72,7 +68,6 @@ module "es_all_options" {
   elasticsearch_version     = "7.10"
   encrypt_storage_enabled   = false
   encrypt_traffic_enabled   = true
-  encryption_kms_key        = data.aws_kms_alias.es_kms.target_key_arn
   environment               = "Development"
   internal_record_name      = "es-custom"
   internal_zone_id          = aws_route53_zone.internal_zone.zone_id

@@ -32,7 +32,7 @@ module "es_all_options" {
   data_node_instance_type   = "t2.small.elasticsearch"
   ebs_iops                  = 1000
   ebs_size                  = 50
-  ebs_type                  = "io1"
+  ebs_type                  = "gp2"
   elasticsearch_version     = "7.10"
   encrypt_storage_enabled   = true
   encrypt_traffic_enabled   = true
@@ -44,7 +44,7 @@ module "es_all_options" {
   ip_whitelist              = ["1.2.3.4"]
   logging_application_logs  = true
   logging_index_slow_logs   = true
-  logging_retention         = 14
+  logging_retention         = 7
   logging_search_slow_logs  = true
   master_node_count         = 3
   master_node_instance_type = "t2.small.elasticsearch"

@@ -41,9 +41,9 @@ variable "ebs_size" {
 }
 
 variable "ebs_type" {
-  description = "The EBS volume type to use with the Amazon ES domain, such as standard, gp2, or io1."
+  description = "The EBS volume type to use with the Amazon ES domain, such as standard, gp3, or io1."
   type        = string
-  default     = "gp2"
+  default     = "gp3"
 }
 
 variable "elasticsearch_version" {
