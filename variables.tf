@@ -25,7 +25,7 @@ variable "data_node_count" {
 variable "data_node_instance_type" {
   description = "Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types."
   type        = string
-  default     = "m5.large.elasticsearch"
+  default     = "t2.small.elasticsearch"
 }
 
 variable "ebs_iops" {
@@ -49,7 +49,7 @@ variable "ebs_type" {
 variable "elasticsearch_version" {
   description = "Elasticsearch Version."
   type        = string
-  default     = "7.1"
+  default     = "7.10"
 }
 
 variable "encrypt_storage_enabled" {
@@ -181,4 +181,10 @@ variable "zone_awareness_enabled" {
   description = "A boolean value to determine if Zone Awareness is enabled. The number of data nodes must be even if this is `true`."
   type        = bool
   default     = true
+}
+
+variable "prevent_destroy" {
+  description = "A boolean on whether to allow destruction of the cluster resource"
+  type        = bool
+  default     = false
 }

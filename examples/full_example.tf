@@ -1,33 +1,39 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.0"
+    }
+  }
 }
 
+
 provider "aws" {
-  region  = "us-west-2"
-  version = "~> 2.2"
+  region = "us-west-2"
 }
 
 data "aws_kms_alias" "es_kms" {
   name = "alias/aws/es"
 }
 
-module "internal_zone" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-route53_internal_zone//?ref=v0.12.0"
+resource "aws_route53_zone" "internal_zone" {
+  name = "mycompany.local"
 
-  environment = "Development"
-  name        = "mycompany.local"
-  vpc_id      = module.vpc.vpc_id
+  vpc {
+    vpc_id = module.vpc.vpc_id
+  }
 }
 
 module "es_all_options" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.4"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=master"
 
-  data_node_count           = 8
-  data_node_instance_type   = "r4.large.elasticsearch"
+  data_node_count           = 6
+  data_node_instance_type   = "t2.small.elasticsearch"
   ebs_iops                  = 1000
   ebs_size                  = 50
   ebs_type                  = "io1"
-  elasticsearch_version     = "7.1"
+  elasticsearch_version     = "7.10"
   encrypt_storage_enabled   = true
   encrypt_traffic_enabled   = true
   encryption_kms_key        = data.aws_kms_alias.es_kms.target_key_arn
@@ -40,8 +46,8 @@ module "es_all_options" {
   logging_index_slow_logs   = true
   logging_retention         = 14
   logging_search_slow_logs  = true
-  master_node_count         = 5
-  master_node_instance_type = "r4.large.elasticsearch"
+  master_node_count         = 3
+  master_node_instance_type = "t2.small.elasticsearch"
   max_clause_count          = "2048"
   name                      = "es-custom"
   security_groups           = ["sg-0024aee5bbfbaddbc", "sg-018f1576271f11f3e"]

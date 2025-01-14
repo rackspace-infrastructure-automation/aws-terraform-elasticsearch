@@ -43,25 +43,50 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
     status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
 ```
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.13 |
+| aws | >= 4.0 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.2.0 |
+| aws | >= 4.0 |
 | random | n/a |
+
+## Modules
+
+No Modules.
+
+## Resources
+
+| Name |
+|------|
+| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/data-sources/caller_identity) |
+| [aws_cloudwatch_log_group](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/cloudwatch_log_group) |
+| [aws_cloudwatch_log_resource_policy](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/cloudwatch_log_resource_policy) |
+| [aws_elasticsearch_domain](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/elasticsearch_domain) |
+| [aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/data-sources/iam_policy_document) |
+| [aws_iam_service_linked_role](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/iam_service_linked_role) |
+| [aws_region](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/data-sources/region) |
+| [aws_route53_record](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/route53_record) |
+| [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | create\_service\_linked\_role | A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present. | `bool` | `false` | no |
 | custom\_access\_policy | The custom access policy as string of JSON. | `string` | `""` | no |
 | data\_node\_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets. | `number` | `6` | no |
-| data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
+| data\_node\_instance\_type | Select data node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"t2.small.elasticsearch"` | no |
 | ebs\_iops | The number of I/O operations per second (IOPS) that the volume supports. | `number` | `0` | no |
 | ebs\_size | The size of the EBS volume for each data node. | `number` | `35` | no |
 | ebs\_type | The EBS volume type to use with the Amazon ES domain, such as standard, gp2, or io1. | `string` | `"gp2"` | no |
-| elasticsearch\_version | Elasticsearch Version. | `string` | `"7.1"` | no |
+| elasticsearch\_version | Elasticsearch Version. | `string` | `"7.10"` | no |
 | encrypt\_storage\_enabled | A boolean value to determine if encryption at rest is enabled for the Elasticsearch cluster. Version must be at least 5.1. | `bool` | `false` | no |
 | encrypt\_traffic\_enabled | A boolean value to determine if encryption for node-to-node traffic is enabled for the Elasticsearch cluster. Version must be at least 6.0. | `bool` | `false` | no |
 | encryption\_kms\_key | The KMS key to use for encryption at rest on the Elasticsearch cluster.If omitted and encryption at rest is enabled, the aws/es KMS key is used. | `string` | `""` | no |
@@ -78,6 +103,7 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | master\_node\_instance\_type | Select master node instance type.  See https://aws.amazon.com/elasticsearch-service/pricing/ for supported instance types. | `string` | `"m5.large.elasticsearch"` | no |
 | max\_clause\_count | Note the use of a string rather than an integer. Specifies the maximum number of clauses allowed in a Lucene boolean query. 1024 is the default. Queries with more than the permitted number of clauses that result in a TooManyClauses error. | `string` | `"1024"` | no |
 | name | The desired name for the Elasticsearch domain. | `string` | n/a | yes |
+| prevent\_destroy | A boolean on whether to allow destruction of the cluster resource | `bool` | `false` | no |
 | security\_groups | A list of EC2 security groups to assign to the Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. | `list(string)` | `[]` | no |
 | snapshot\_start\_hour | The hour (0-23) to issue a daily snapshot of Elasticsearch cluster. | `number` | `0` | no |
 | subnets | Subnets for Elasticsearch cluster.  Ignored if Elasticsearch cluster is not VPC enabled. If not using Zone Awareness this should be a list of one subnet. | `list(string)` | `[]` | no |
@@ -95,4 +121,3 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | endpoint | The endpoint for the Elasticsearch cluster |
 | kibana\_endpoint | The kibana endpoint for the Elasticsearch cluster |
 | log\_group\_arn | The ARN for the CloudWatch Log group for this Elasticsearch Cluster |
-
