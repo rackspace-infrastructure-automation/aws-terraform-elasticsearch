@@ -1,10 +1,16 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.0"
+    }
+  }
 }
 
 provider "aws" {
-  region  = "us-west-2"
-  version = "~> 2.2"
+  region = "us-west-2"
 }
 
 data "aws_kms_alias" "es_kms" {
@@ -20,7 +26,7 @@ module "internal_zone" {
 }
 
 module "es_all_options" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.12.4"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-elasticsearch//?ref=v0.13.1"
 
   data_node_count           = 8
   data_node_instance_type   = "r4.large.elasticsearch"

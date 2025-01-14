@@ -46,10 +46,13 @@
  */
 
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
 
   required_providers {
-    aws = ">= 2.2.0"
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.0"
+    }
   }
 }
 
@@ -57,7 +60,7 @@ resource "random_string" "r_string" {
   length  = 5
   upper   = false
   lower   = true
-  number  = true
+  numeric = true
   special = false
 }
 

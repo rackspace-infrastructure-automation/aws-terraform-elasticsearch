@@ -43,17 +43,42 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
     status code: 404, request id: 5a1614d2-1e64-11e9-a87e-3149d48d2026
 ```
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.13 |
+| aws | >= 4.0 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.2.0 |
+| aws | >= 4.0 |
 | random | n/a |
+
+## Modules
+
+No Modules.
+
+## Resources
+
+| Name |
+|------|
+| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/data-sources/caller_identity) |
+| [aws_cloudwatch_log_group](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/cloudwatch_log_group) |
+| [aws_cloudwatch_log_resource_policy](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/cloudwatch_log_resource_policy) |
+| [aws_elasticsearch_domain](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/elasticsearch_domain) |
+| [aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/data-sources/iam_policy_document) |
+| [aws_iam_service_linked_role](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/iam_service_linked_role) |
+| [aws_region](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/data-sources/region) |
+| [aws_route53_record](https://registry.terraform.io/providers/hashicorp/aws/4.0/docs/resources/route53_record) |
+| [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | create\_service\_linked\_role | A boolean value to determine if the ElasticSearch Service Linked Role should be created.  This should only be set to true if the Service Linked Role is not already present. | `bool` | `false` | no |
 | custom\_access\_policy | The custom access policy as string of JSON. | `string` | `""` | no |
 | data\_node\_count | Number of data nodes in the Elasticsearch cluster. If using Zone Awareness this must be a multiple of the number of subnets being used, e.g. 2, 4, 6, etc. for 2 subnets or 3, 6, 9, etc. for 3 subnets. | `number` | `6` | no |
@@ -96,4 +121,3 @@ Error creating ElasticSearch domain: ValidationException: Before you can proceed
 | endpoint | The endpoint for the Elasticsearch cluster |
 | kibana\_endpoint | The kibana endpoint for the Elasticsearch cluster |
 | log\_group\_arn | The ARN for the CloudWatch Log group for this Elasticsearch Cluster |
-
