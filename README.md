@@ -1,3 +1,7 @@
+[!CAUTION]
+This project is end of life. This repo will be deleted on June 2nd 2025.
+
+
 # aws-terraform-elasticsearch
 
 This module creates an ElasticSearch cluster.
